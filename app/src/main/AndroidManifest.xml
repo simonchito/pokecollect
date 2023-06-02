@@ -16,6 +16,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".ui.PokemonViewModel"
+            android:exported="false" />
+        <activity
+            android:name=".ui.PokemonActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.BagActivity"
             android:exported="false" />
         <activity

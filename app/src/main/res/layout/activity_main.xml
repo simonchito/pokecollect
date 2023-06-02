@@ -7,46 +7,15 @@
     android:background="@color/amarillo"
     tools:context=".ui.MainActivity">
 
-    <Button
-        android:id="@+id/pokedexBtn"
-        android:layout_width="120dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
-        android:backgroundTint="#FDFCFC"
-        android:text="@string/pokedex"
-        app:icon="@color/black"
-        app:layout_constraintEnd_toStartOf="@+id/bagBtn"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/bagBtn"
-        android:layout_width="120dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
-        android:backgroundTint="#F4F3F3"
-        android:text="@string/bag"
-        app:iconTint="#020202"
-        app:layout_constraintEnd_toStartOf="@+id/pokemonBtn"
-        app:layout_constraintStart_toEndOf="@+id/pokedexBtn"
-        app:layout_constraintTop_toTopOf="parent" />
+    <include
+        layout="@layout/custom_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
-    <Button
-        android:id="@+id/pokemonBtn"
-        android:layout_width="120dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="1dp"
-        android:backgroundTint="#FFFFFF"
-        android:text="@string/pokemon"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/bagBtn"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <ListView
+        android:id="@+id/listViewPokedex"
         android:layout_width="386dp"
         android:layout_height="391dp"
         android:layout_marginTop="5dp"
@@ -70,7 +39,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pokedexBtn"
         tools:ignore="Autofill,LabelFor" />
 
     <Button

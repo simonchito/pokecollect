@@ -1,15 +1,19 @@
 package ar.edu.uade.da2023.pokecollect.data
 
-import ar.edu.uade.da2023.pokecollect.model.Pokemon
+import Pokemon
+import ar.edu.uade.da2023.pokecollect.model.PokemonInfo
 
 class PokemonsRepository {
     //dependencias
     private val pokemonsDataSource = PokemonsDataSource()
 
-    suspend fun getPokemons() : ArrayList<Pokemon> {
+    suspend fun getPokemons() : Pokemon {
 
         return pokemonsDataSource.getPokemons()
 
     }
 
+    suspend fun getPokemon(name: String): PokemonInfo {
+        return pokemonsDataSource.getPokemon(name)
+    }
 }

@@ -1,11 +1,15 @@
-package ar.edu.uade.da2023.pokecollect.model
+package ar.edu.uade.da2023.pokecollect.data.local
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import ar.edu.uade.da2023.pokecollect.model.Atributos.Ability
 import ar.edu.uade.da2023.pokecollect.model.Atributos.GameIndex
 import ar.edu.uade.da2023.pokecollect.model.Atributos.Sprites
 
-data class PokemonInfo(
-    val id: Int,
+
+@Entity(tableName = "Pokemon")
+data class PokemonInfoLocal(
+    @PrimaryKey val id: Int,
     val name: String,
     val height: Int,
     val order: Int,

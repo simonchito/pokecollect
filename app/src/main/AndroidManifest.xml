@@ -12,7 +12,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.PokeCollect"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
@@ -27,6 +27,7 @@
         <activity
             android:name=".ui.MainActivity"
             android:exported="false" />
+
         <activity
             android:name=".ui.SplashActivity"
             android:exported="true"

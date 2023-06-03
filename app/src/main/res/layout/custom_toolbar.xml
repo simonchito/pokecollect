@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.Toolbar
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -11,68 +9,61 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <ImageView
             android:id="@+id/imgVwLogo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="307dp"
+            android:layout_height="71dp"
+            android:layout_marginTop="4dp"
             android:contentDescription="@string/logo"
             android:src="@drawable/pokereflexlogo"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"/>
-
-        <LinearLayout
-            android:id="@+id/buttonLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@id/imgVwLogo"
+            app:layout_constraintHorizontal_bias="0.386"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <Button
-                android:id="@+id/pokedexBtn"
-                style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="5dp"
-                android:layout_height="50dp"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_weight="1"
-                android:backgroundTint="@color/white"
-                android:text="@string/pokedex"
-                android:textColor="@color/black"
-                android:textColorHint="@color/black"
-                app:iconTint="@color/black" />
+        <Button
+            android:id="@+id/pokedexBtn"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:backgroundTint="@color/white"
+            android:text="@string/pokedex"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toStartOf="@id/bagBtn"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imgVwLogo" />
 
-            <Button
-                android:id="@+id/bagBtn"
-                style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="5dp"
-                android:layout_height="50dp"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_weight="1"
-                android:backgroundTint="@color/white"
-                android:text="@string/bag"
-                android:textColor="@color/black" />
+        <Button
+            android:id="@+id/bagBtn"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:backgroundTint="@color/white"
+            android:text="@string/bag"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toStartOf="@id/pokemonBtn"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@id/pokedexBtn"
+            app:layout_constraintTop_toBottomOf="@id/imgVwLogo" />
 
-            <Button
-                android:id="@+id/pokemonBtn"
-                android:layout_width="5dp"
-                android:layout_height="50dp"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="1dp"
-                android:layout_weight="1"
-                android:backgroundTint="@color/white"
-                android:text="@string/pokemon"
-                android:textColor="@color/black"
-                tools:ignore="ButtonStyle,VisualLintBounds" />
-
-        </LinearLayout>
+        <Button
+            android:id="@+id/pokemonBtn"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginEnd="5dp"
+            android:backgroundTint="@color/white"
+            android:text="@string/pokemon"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@id/bagBtn"
+            app:layout_constraintTop_toBottomOf="@id/imgVwLogo" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

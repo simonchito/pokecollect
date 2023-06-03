@@ -6,4 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".ui.PokemonActivity">
 
+    <include
+        layout="@layout/custom_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="-6dp" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

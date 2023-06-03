@@ -2,6 +2,7 @@ package ar.edu.uade.da2023.pokecollect.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toolbar
 import androidx.lifecycle.MutableLiveData
 import ar.edu.uade.da2023.pokecollect.R
 import ar.edu.uade.da2023.pokecollect.data.PokemonsDataSource
@@ -14,6 +15,8 @@ import kotlin.coroutines.CoroutineContext
 
 class PokemonActivity : AppCompatActivity() {
 
+
+    private lateinit var toolbar: Toolbar
     private val _TAG = "API-POKE"
     @OptIn(DelicateCoroutinesApi::class)
     private val coroutineContext: CoroutineContext = newSingleThreadContext("pokecollect")
@@ -29,12 +32,10 @@ class PokemonActivity : AppCompatActivity() {
 
 
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pokemon)
-
+        setSupportActionBar(findViewById(R.id.toolbar))
 
 
     }

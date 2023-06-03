@@ -30,16 +30,14 @@ class PokemonsDataSource {
             if (response.isSuccessful) {
                 val pokemonList = response.body()?.results ?: emptyList()
                 val count = response.body()?.count ?: 0
-                val next = response.body()?.next
-                val previous = response.body()?.previous
-                Pokemon(count, next, previous, pokemonList)
+                Pokemon(count, pokemonList)
             } else {
                 Log.e(TAG, "Error en llamada API: ${response.message()}")
-                Pokemon(0, null, null, emptyList())
+                Pokemon(0, emptyList())
             }
         } catch (e: Exception) {
             Log.e(TAG, "Error en llamada API: ${e.message}")
-            Pokemon(0, null, null, emptyList())
+            Pokemon(0, emptyList())
         }
     }
 
@@ -50,6 +48,7 @@ class PokemonsDataSource {
             val response = api.getPokemon(name).execute()
             if (response.isSuccessful) {
                 response.body() ?: throw Exception("No se recibieron datos del Pokemon")
+
             } else {
                 Log.e(TAG, "Error en llamada API: ${response.message()}")
                 throw Exception("Error en llamada API")

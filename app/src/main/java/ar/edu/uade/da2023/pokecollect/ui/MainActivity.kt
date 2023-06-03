@@ -13,22 +13,19 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: MainViewModel
     private lateinit var toolbar: Toolbar
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        setSupportActionBar(findViewById(R.id.toolbar))
         bindViewModel()
 
     }
-
-
 
 
     override fun onStart() {
         super.onStart()
         viewModel.onStart()
     }
-
 
 
     private fun bindViewModel() {

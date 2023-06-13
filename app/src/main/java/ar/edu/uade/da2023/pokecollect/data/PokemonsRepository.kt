@@ -17,9 +17,7 @@ class PokemonsRepository {
         return pokemonsDataSource.getPokemon(name)
     }
 
-    suspend fun getAllPokemonInfo(count : Int) : ArrayList<PokemonInfo> {
-        return pokemonsDataSource.getAllPokemonInfo(count)
-    }
+
 
 
 }

@@ -16,6 +16,4 @@ interface PokemonsApi {
     @GET("pokemon/{name}")
     fun getPokemon(@Path("name") name: String): Call<PokemonInfo>
 
-    @GET("pokemon/{count}")
-    fun getAllPokemonInfo(@Path("count") count : Int): Call<PokemonInfo>
 }

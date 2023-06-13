@@ -14,7 +14,7 @@ data class PokemonInfoLocal(
     val height: Int,
     val order: Int,
     val weight: Int,
-    val abilities: List<Ability>,
-    val gameIndices: List<GameIndex>,
-    val sprites: Sprites
+    val abilities: String,
+    val gameIndices: String,
+    val sprites: String
 )

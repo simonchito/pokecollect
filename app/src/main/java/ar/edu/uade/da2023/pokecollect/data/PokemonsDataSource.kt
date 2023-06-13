@@ -43,7 +43,6 @@ class PokemonsDataSource {
 
     suspend fun getPokemon(name: String): PokemonInfo {
         Log.d(TAG, "Pokemon DataSource GET")
-
         return try {
             val response = api.getPokemon(name).execute()
             if (response.isSuccessful) {

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "34931490547",
+    "project_id": "poke-collect-cae23",
+    "storage_bucket": "poke-collect-cae23.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:34931490547:android:dcdb6b2873d4a9b32a8186",
+        "android_client_info": {
+          "package_name": "ar.edu.uade.da2023.pokecollect"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "34931490547-0v7nincu5h8i9lsmj18s23ko8u7p4apo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ar.edu.uade.da2023.pokecollect",
+            "certificate_hash": "7feae176c769115f6ac307681b53fb1e50b14060"
+          }
+        },
+        {
+          "client_id": "34931490547-tgsaq9nr8af0nincghuq28o7bpf77lqu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCy2lAvni0eXh4mr3_NOBDaY-tzK8gcTjc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "34931490547-o2cgada8btha2l6e2gqk8083rellrh4q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

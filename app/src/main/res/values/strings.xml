@@ -4,6 +4,7 @@
     <string name="pokemon">Pokémon</string>
     <string name="pokedex">Pokédex</string>
     <string name="exit">EXIT</string>
+    <string name="login">LOGIN</string>
     <string name="title_activity_splash">SplashActivity</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>

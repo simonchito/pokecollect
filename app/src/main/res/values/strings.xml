@@ -51,4 +51,10 @@
     <string name="search">search</string>
     <string name="logo">Logo</string>
     <string name="back">Back</string>
+    <string name="TYPE">TYPE</string>
+    <string name="SKILL">SKILL</string>
+    <string name="FIGURE">FIGURE</string>
+    <string name="NAME">NAME</string>
+    <string name="IMAGEN">IMAGEN DE UN POKEMON</string>
+
 </resources>

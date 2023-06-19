@@ -18,6 +18,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var toolbar: Toolbar
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var exitButton: Button
+    private lateinit var pokemonButton: Button
+    private lateinit var bagButton: Button
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,8 +30,23 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.toolbar))
         bindViewModel()
 
+        //Configuracion del boton exit, al apretarlo cierra la aplicacion completamente
         exitButton = findViewById(R.id.ExitBtn)
         exitButton.setOnClickListener { exitApplication() }
+
+        //Configuracion del boton pokemon, al apretarlo abre esa actividad
+        pokemonButton = findViewById(R.id.pokemonBtn)
+        pokemonButton.setOnClickListener{
+            val intent = Intent(this, PokemonActivity::class.java)
+            startActivity(intent)
+        }
+
+        //Configuracion del boton bag, al apretarlo abre esa actividad
+        bagButton = findViewById(R.id.bagBtn)
+        bagButton.setOnClickListener{
+            val intent = Intent(this, BagActivity::class.java)
+            startActivity(intent)
+        }
 
     }
 

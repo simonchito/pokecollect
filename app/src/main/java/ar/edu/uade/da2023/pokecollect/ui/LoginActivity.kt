@@ -18,6 +18,7 @@ import java.lang.Exception
 
 class LoginActivity : AppCompatActivity() {
 
+
     private lateinit var loginButton: Button
     private lateinit var googleSignInCliente: GoogleSignInClient
     private lateinit var firebaseAuth: FirebaseAuth
@@ -48,7 +49,8 @@ class LoginActivity : AppCompatActivity() {
             try {
                 val account = accountTask.getResult(ApiException::class.java)
                 firebaseAuthWithGoogleAccount(account)
-            } catch (e: Exception) {
+            }
+            catch (e: Exception) {
                 Log.d("DEMO", "onActivityResult: ${e.message}")
             }
         }
@@ -65,15 +67,15 @@ class LoginActivity : AppCompatActivity() {
                 if (authResult.additionalUserInfo!!.isNewUser) {
                     // Crear Account
                     Toast.makeText(this@LoginActivity, "Cuenta creada...", Toast.LENGTH_LONG).show()
-                } else {
-                    Toast.makeText(this@LoginActivity, "Cuenta existente...", Toast.LENGTH_LONG)
-                        .show()
+                }
+                else {
+                    Toast.makeText(this@LoginActivity, "Cuenta existente...", Toast.LENGTH_LONG).show()
                 }
 
                 startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                 finish()
             }
-            .addOnFailureListener { e ->
+            .addOnFailureListener { e->
                 Toast.makeText(this@LoginActivity, "Login fallido...", Toast.LENGTH_LONG).show()
             }
     }

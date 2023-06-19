@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import ar.edu.uade.da2023.pokecollect.R
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.ListView
 import android.widget.Toolbar
 import androidx.recyclerview.widget.RecyclerView
@@ -15,8 +16,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var viewModel: MainViewModel
     private lateinit var toolbar: Toolbar
-    private lateinit var rvUniversities: RecyclerView
     private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var exitButton: Button
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,6 +27,9 @@ class MainActivity : AppCompatActivity() {
         checkUser()
         setSupportActionBar(findViewById(R.id.toolbar))
         bindViewModel()
+
+        exitButton = findViewById(R.id.ExitBtn)
+        exitButton.setOnClickListener { exitApplication() }
 
     }
 
@@ -54,6 +58,11 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
         }
+    }
+
+    private fun exitApplication() {
+        // cerrar completamente la aplicación, puedes usar finishAffinity()
+        finishAffinity()
     }
 
 }

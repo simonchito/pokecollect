@@ -21,6 +21,5 @@ buildscript {
         mavenCentral()
     }
 }
-
 rootProject.name = "PokeCollect"
 include ':app'

@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toolbar
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import ar.edu.uade.da2023.pokecollect.R
 
 class BagActivity : AppCompatActivity() {
@@ -18,6 +20,12 @@ class BagActivity : AppCompatActivity() {
         setContentView(R.layout.activity_bag)
         setSupportActionBar(findViewById(R.id.toolbar))
 
+        val recyclerView = findViewById<RecyclerView>(R.id.listBagRecyclerV)
+        val adapter = BagAdapter()
+
+
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = adapter
 
         var prefs= getSharedPreferences("ar.edu.uade.da2023.pokecollect.sharedpref", Context.MODE_PRIVATE)
         var user = prefs.getString("user", "")

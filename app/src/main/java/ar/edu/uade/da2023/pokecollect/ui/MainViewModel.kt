@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.newSingleThreadContext
 import kotlin.coroutines.CoroutineContext
 
-class MainViewModel : ViewModel() {
+class   MainViewModel : ViewModel() {
     //constante
     private val _TAG = "API-POKE"
     @OptIn(DelicateCoroutinesApi::class)
@@ -24,7 +24,6 @@ class MainViewModel : ViewModel() {
 
 
     //propiedades
-
     var pokemon = MutableLiveData<Pokemon>()
 
 

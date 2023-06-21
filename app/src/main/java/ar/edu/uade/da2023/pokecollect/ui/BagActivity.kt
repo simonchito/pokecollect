@@ -36,5 +36,9 @@ class BagActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        val backButton = findViewById<Button>(R.id.backBtn)
+        backButton.setOnClickListener {
+            finish()
+        }
     }
 }

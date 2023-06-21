@@ -3,6 +3,7 @@ package ar.edu.uade.da2023.pokecollect.ui
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.AdapterView
 import androidx.lifecycle.ViewModelProvider
 import ar.edu.uade.da2023.pokecollect.R
 import android.widget.ArrayAdapter
@@ -65,6 +66,16 @@ class MainActivity : AppCompatActivity() {
             val listView = findViewById<ListView>(R.id.listViewPokedex)
             val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, pokemonNames)
             listView.adapter = adapter
+
+            // Establecer el listener de clic en el ListView
+            listView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
+                val selectedPokemon = pokemonNames[position]
+
+                // Crear un intent para iniciar la actividad PokemonActivity
+                val intent = Intent(this@MainActivity, PokemonActivity::class.java)
+                intent.putExtra("pokemonName", selectedPokemon)
+                startActivity(intent)
+            }
         }
     }
 

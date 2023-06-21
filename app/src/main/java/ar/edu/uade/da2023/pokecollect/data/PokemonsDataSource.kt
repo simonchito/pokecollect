@@ -47,7 +47,13 @@ class PokemonsDataSource {
             val response = api.getPokemon(name).execute()
             if (response.isSuccessful) {
                 response.body() ?: throw Exception("No se recibieron datos del Pokemon")
-
+                val pokemonInfo = response.body()
+                if (pokemonInfo != null) {
+                    Log.d(TAG, "Response body: ${pokemonInfo.toString()}")
+                    pokemonInfo
+                } else {
+                    throw Exception("No se recibieron datos del Pokemon")
+                }
             } else {
                 Log.e(TAG, "Error en llamada API: ${response.message()}")
                 throw Exception("Error en llamada API")

@@ -8,6 +8,7 @@ import android.preference.PreferenceManager
 import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.Switch
 import android.widget.TextView
 import android.widget.Toolbar
 import androidx.lifecycle.MutableLiveData
@@ -24,6 +25,7 @@ import androidx.core.text.HtmlCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import kotlinx.coroutines.launch
+import java.util.Locale
 
 class PokemonActivity : AppCompatActivity() {
 
@@ -113,12 +115,12 @@ class PokemonActivity : AppCompatActivity() {
 
 
             Glide.with(this)
-                .load(pokemon.sprites.front_default) // Reemplaza `front_default` con la propiedad adecuada de PokemonInfo que contiene la URL de la imagen
-                .diskCacheStrategy(DiskCacheStrategy.ALL) // Opcional: establece la estrategia de almacenamiento en caché
+                .load(pokemon.sprites.front_default)
+                .diskCacheStrategy(DiskCacheStrategy.ALL) //  establece la estrategia de almacenamiento en caché
                 .into(pokemonImg)
 
 
-            // Asignar los nombres y tipos con las primeras letras en mayúsculas
+
             namepokemonTxv.text = HtmlCompat.fromHtml("<b>Name:</b> ${pokemon.name?.capitalize()}", HtmlCompat.FROM_HTML_MODE_COMPACT)
             typeTxv.text = HtmlCompat.fromHtml("<b>Type:</b> ${
                 if (pokemon.types.isNotEmpty()) {
@@ -128,8 +130,12 @@ class PokemonActivity : AppCompatActivity() {
                 }
             }", HtmlCompat.FROM_HTML_MODE_COMPACT)
 
-            // Asignar las habilidades con las primeras letras en mayúsculas y formato en negrita
-            skillTxv.text = HtmlCompat.fromHtml("<b>Skill:</b> ${pokemon.abilities.joinToString(", ") { it.ability.name?.capitalize() ?: "" }}", HtmlCompat.FROM_HTML_MODE_COMPACT)
+            // Asignar las habilidades
+            skillTxv.text = HtmlCompat.fromHtml("<b>Skill:</b> ${pokemon.abilities.joinToString(", ") { it.ability.name.replaceFirstChar {
+                if (it.isLowerCase()) it.titlecase(
+                    Locale.getDefault()
+                ) else it.toString()
+            } ?: "" }}", HtmlCompat.FROM_HTML_MODE_COMPACT)
 
             figureTxv.text = HtmlCompat.fromHtml("<b>Figure:</b> ${pokemon.order}", HtmlCompat.FROM_HTML_MODE_COMPACT)
         }
@@ -150,6 +156,24 @@ class PokemonActivity : AppCompatActivity() {
         backButton.setOnClickListener {
             finish()
         }
+        val favoritoBtn = findViewById<Button>(R.id.favoritoBtn)
+        var isButtonPressed = false
+
+        favoritoBtn.setOnClickListener {
+            isButtonPressed = !isButtonPressed
+
+            val drawableRes = if (isButtonPressed) {
+                android.R.drawable.btn_star_big_on
+            } else {
+                android.R.drawable.btn_star_big_off
+            }
+
+            favoritoBtn.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, drawableRes)
+        }
+
+
+
+
 
 
     }

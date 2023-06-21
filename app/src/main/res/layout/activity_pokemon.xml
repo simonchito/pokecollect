@@ -32,14 +32,23 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/naranja"
             android:gravity="center_vertical"
             android:orientation="vertical"
-            android:padding="10dp"
-            >
+            android:padding="10dp">
+
+            <Button
+                android:id="@+id/favoritoBtn"
+                android:layout_width="52dp"
+                android:layout_height="48dp"
+                android:layout_gravity="end"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:backgroundTint="@color/naranja"
+                android:drawableBottom="@android:drawable/btn_star_big_off" />
 
             <ImageView
                 android:id="@+id/pokemonImg"
-                android:layout_marginTop="20dp"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_gravity="center_horizontal"
@@ -82,6 +91,7 @@
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/text_background"
                 android:text="@string/FIGURE" />
+
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
@@ -96,7 +106,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        />
+        app:layout_constraintStart_toStartOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

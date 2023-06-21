@@ -20,6 +20,7 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.newSingleThreadContext
 import kotlin.coroutines.CoroutineContext
 import androidx.cardview.widget.CardView;
+import androidx.core.text.HtmlCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import kotlinx.coroutines.launch
@@ -116,15 +117,21 @@ class PokemonActivity : AppCompatActivity() {
                 .diskCacheStrategy(DiskCacheStrategy.ALL) // Opcional: establece la estrategia de almacenamiento en caché
                 .into(pokemonImg)
 
-            // Asignar los nombres y tipos
-            namepokemonTxv.text = pokemon.name
-            typeTxv.text = pokemon.types.joinToString(", ") { it.name }
 
-            // Asignar las habilidades
-            skillTxv.text = pokemon.abilities.joinToString(", ") { it.ability.name }
+            // Asignar los nombres y tipos con las primeras letras en mayúsculas
+            namepokemonTxv.text = HtmlCompat.fromHtml("<b>Name:</b> ${pokemon.name?.capitalize()}", HtmlCompat.FROM_HTML_MODE_COMPACT)
+            typeTxv.text = HtmlCompat.fromHtml("<b>Type:</b> ${
+                if (pokemon.types.isNotEmpty()) {
+                    pokemon.types.joinToString(", ") { it.name?.capitalize() ?: "" }
+                } else {
+                    "None"
+                }
+            }", HtmlCompat.FROM_HTML_MODE_COMPACT)
 
-            // Asignar la figura
-            figureTxv.text = pokemon.order.toString()
+            // Asignar las habilidades con las primeras letras en mayúsculas y formato en negrita
+            skillTxv.text = HtmlCompat.fromHtml("<b>Skill:</b> ${pokemon.abilities.joinToString(", ") { it.ability.name?.capitalize() ?: "" }}", HtmlCompat.FROM_HTML_MODE_COMPACT)
+
+            figureTxv.text = HtmlCompat.fromHtml("<b>Figure:</b> ${pokemon.order}", HtmlCompat.FROM_HTML_MODE_COMPACT)
         }
         //Toolbar function buttons
 

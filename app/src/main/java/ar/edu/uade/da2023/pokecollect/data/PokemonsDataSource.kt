@@ -2,7 +2,9 @@ package ar.edu.uade.da2023.pokecollect.data
 
 import Pokemon
 import android.util.Log
+import ar.edu.uade.da2023.pokecollect.data.local.toLocal
 import ar.edu.uade.da2023.pokecollect.model.PokemonInfo
+import com.google.firebase.firestore.FirebaseFirestore
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.Response
@@ -21,6 +23,7 @@ class PokemonsDataSource {
 
         api = retrofit.create(PokemonsApi::class.java)
     }
+
 
     suspend fun getPokemons(): Pokemon {
         Log.d(TAG, "Pokemons DataSource GET")
@@ -48,9 +51,13 @@ class PokemonsDataSource {
             if (response.isSuccessful) {
                 response.body() ?: throw Exception("No se recibieron datos del Pokemon")
                 val pokemonInfo = response.body()
+                //guarda pokemon a la informacion local
+                var pokemoninfoLocal = pokemonInfo?.toLocal()
                 if (pokemonInfo != null) {
+
                     Log.d(TAG, "Response body: ${pokemonInfo.toString()}")
                     pokemonInfo
+
                 } else {
                     throw Exception("No se recibieron datos del Pokemon")
                 }

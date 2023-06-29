@@ -10,14 +10,8 @@ import ar.edu.uade.da2023.pokecollect.model.PokemonInfo
 @Dao
 interface PokemonDao {
 
-    @Query("SELECT * FROM pokemon")
-    fun getAll() : List<PokemonInfoLocal>
-
-    @Query("SELECT * FROM Pokemon WHERE name = :name LIMIT 1")
-    fun getByName(name: String) : PokemonInfoLocal
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun Insert(vararg pokemonInfo: PokemonInfoLocal)
+    fun insert(vararg pokemonInfo: PokemonInfoLocal)
 
     @Delete
     fun delete(pokemonInfo: PokemonInfoLocal)

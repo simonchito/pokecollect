@@ -8,22 +8,21 @@ import android.preference.PreferenceManager
 import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
-import android.widget.Switch
 import android.widget.TextView
 import android.widget.Toolbar
 import androidx.lifecycle.MutableLiveData
 import ar.edu.uade.da2023.pokecollect.R
-import ar.edu.uade.da2023.pokecollect.data.PokemonsDataSource
 import ar.edu.uade.da2023.pokecollect.data.PokemonsRepository
 import ar.edu.uade.da2023.pokecollect.model.PokemonInfo
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.newSingleThreadContext
 import kotlin.coroutines.CoroutineContext
-import androidx.cardview.widget.CardView;
 import androidx.core.text.HtmlCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
 import java.util.Locale
 
@@ -35,6 +34,10 @@ class PokemonActivity : AppCompatActivity() {
     @OptIn(DelicateCoroutinesApi::class)
     private val coroutineContext: CoroutineContext = newSingleThreadContext("pokecollect")
     private val scope = CoroutineScope(coroutineContext)
+
+    private val favoriteList = ArrayList<PokemonInfo>()
+    private val firestore = FirebaseFirestore.getInstance()
+    private val userCollection = firestore.collection("users")
 
     //dependencias
     private val pokemonsRepository = PokemonsRepository()
@@ -52,6 +55,8 @@ class PokemonActivity : AppCompatActivity() {
     private lateinit var pokedexButton: Button
     private lateinit var bagButton: Button
 
+    private lateinit var firebaseAuth: FirebaseAuth
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,6 +71,7 @@ class PokemonActivity : AppCompatActivity() {
         Log.d(_TAG,"pokemonInfo value: ${pokemonName}")
 
         val actualPokemonName = pokemonName ?: lastPokemonName
+        firebaseAuth = FirebaseAuth.getInstance()
 
 
         // Verifico si se recibió el nombre del Pokémon correctamente
@@ -124,7 +130,7 @@ class PokemonActivity : AppCompatActivity() {
             namepokemonTxv.text = HtmlCompat.fromHtml("<b>Name:</b> ${pokemon.name?.capitalize()}", HtmlCompat.FROM_HTML_MODE_COMPACT)
             typeTxv.text = HtmlCompat.fromHtml("<b>Type:</b> ${
                 if (pokemon.types.isNotEmpty()) {
-                    pokemon.types.joinToString(", ") { it.name?.capitalize() ?: "" }
+                    pokemon.types.joinToString(", ") { it.type?.name?.capitalize() ?: "" }
                 } else {
                     "None"
                 }
@@ -157,25 +163,80 @@ class PokemonActivity : AppCompatActivity() {
             finish()
         }
         val favoritoBtn = findViewById<Button>(R.id.favoritoBtn)
-        var isButtonPressed = false
+        // Inicializar el estado de favorito del Pokémon
+        var isPokemonFavorite = false
 
         favoritoBtn.setOnClickListener {
-            isButtonPressed = !isButtonPressed
-
-            val drawableRes = if (isButtonPressed) {
-                android.R.drawable.btn_star_big_on
+            if (!isPokemonFavorite) {
+                // Agregar el pokemonInfo a la lista de favoritos
+                addToFavorites(pokemonInfo)
+                // Actualizar la imagen del botón
+                favoritoBtn.setBackgroundResource(android.R.drawable.btn_star_big_on)
+                // Actualizar el estado del botón de favoritos
+                isPokemonFavorite = true
             } else {
-                android.R.drawable.btn_star_big_off
+                // Eliminar el pokemonInfo de la lista de favoritos
+                removeFromFavorites(pokemonInfo)
+                // Actualizar la imagen del botón
+                favoritoBtn.setBackgroundResource(android.R.drawable.btn_star_big_off)
+                // Actualizar el estado del botón de favoritos
+                isPokemonFavorite = false
             }
-
-            favoritoBtn.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, drawableRes)
         }
-
-
-
-
 
 
     }
 
+    private fun saveFavoritesToFirestore(favoriteList: List<PokemonInfo>) {
+        // Obtener el ID del usuario actualmente autenticado
+        val userId = firebaseAuth.currentUser?.uid
+
+        if (userId != null) {
+            // Crear un documento para el usuario en la colección "users"
+            val userDocument = userCollection.document(userId)
+
+            // Convertir la lista de favoritos en un mapa
+            val favoritesData = favoriteList.map { pokemon ->
+                mapOf(
+                    "id" to pokemon.id,
+                    "name" to pokemon.name,
+                    "order" to pokemon.order,
+                    "abilities" to pokemon.abilities,
+                    "types" to pokemon.types,
+                    "sprites" to pokemon.sprites
+                )
+            }
+
+            // Guardar la lista de favoritos en el documento del usuario en Firestore
+            userDocument.update("favorites", favoritesData)
+                .addOnSuccessListener {
+                    // La lista de favoritos se guardó correctamente en Firestore
+                }
+                .addOnFailureListener { exception ->
+                    // Ocurrió un error al guardar la lista de favoritos en Firestore
+                }
+        }
+    }
+    private fun addToFavorites(pokemonInfo: MutableLiveData<PokemonInfo>) {
+        // Agregar el pokémon a la lista de favoritos local
+        val pokemon = pokemonInfo.value
+        if (pokemon != null) {
+            favoriteList.add(pokemon)
+        }
+
+        // Guardar la lista de favoritos actualizada en Cloud Firestore
+        saveFavoritesToFirestore(favoriteList)
+    }
+
+    private fun removeFromFavorites(pokemonInfo: MutableLiveData<PokemonInfo>) {
+        // Eliminar el pokémon de la lista de favoritos local
+        val pokemon = pokemonInfo.value
+        if (pokemon != null) {
+            favoriteList.remove(pokemon)
+        }
+
+        // Guardar la lista de favoritos actualizada en Cloud Firestore
+        saveFavoritesToFirestore(favoriteList)
+    }
 }
+

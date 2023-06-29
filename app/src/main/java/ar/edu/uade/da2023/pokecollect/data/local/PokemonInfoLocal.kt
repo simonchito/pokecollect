@@ -4,12 +4,12 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 
-@Entity(tableName = "Pokemon")
+@Entity(tableName = "PokemonInfo")
 data class PokemonInfoLocal(
+    val abilities: String,
     @PrimaryKey val id: Int,
     val name: String,
     val order: Int,
-    val abilities: String,
     val sprites: String,
     val types : String
 )

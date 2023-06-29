@@ -10,8 +10,11 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.ListView
 import android.widget.Toolbar
-import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,6 +29,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        FirebaseApp.initializeApp(this)
         firebaseAuth = FirebaseAuth.getInstance()
         checkUser()
         setSupportActionBar(findViewById(R.id.toolbar))
@@ -81,12 +85,32 @@ class MainActivity : AppCompatActivity() {
 
     private fun checkUser() {
         val firebaseUser = firebaseAuth.currentUser
+
         if (firebaseUser == null) {
             // Usuario no logueado
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
+        } else {
+            val db = FirebaseFirestore.getInstance()
+            val userCollection = db.collection("users")
+            val userDocument = userCollection.document(firebaseUser.uid)
+
+            val userData = hashMapOf(
+                "email" to firebaseUser.email
+            )
+
+            userDocument.set(userData)
+                .addOnSuccessListener {
+                    // El usuario se guardó correctamente en Firestore
+                    // Continúa con la lógica de tu aplicación después de guardar el usuario
+                }
+                .addOnFailureListener { exception ->
+                    // Ocurrió un error al guardar el usuario en Firestore
+                    // Maneja el error según tus necesidades
+                }
         }
     }
+
 
     private fun exitApplication() {
         // cerrar completamente la aplicación, puedes usar finishAffinity()

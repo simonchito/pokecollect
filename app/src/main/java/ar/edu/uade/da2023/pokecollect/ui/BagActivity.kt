@@ -1,11 +1,13 @@
 package ar.edu.uade.da2023.pokecollect.ui
 
+
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.SearchView
 import android.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -30,11 +32,28 @@ class BagActivity : AppCompatActivity() {
     private lateinit var adapter: BagAdapter
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var userId: String
+    private lateinit var searchVw : SearchView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bag)
         setSupportActionBar(findViewById(R.id.toolbar))
+
+
+        //Funcionalidad del SearchVIEW
+        searchVw = findViewById(R.id.searchVw)
+
+        searchVw.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                adapter.filterFavorites(newText)
+                return true
+            }
+        })
 
         val recyclerView = findViewById<RecyclerView>(R.id.listBagRecyclerV)
         adapter = BagAdapter(favorites)
@@ -98,6 +117,5 @@ class BagActivity : AppCompatActivity() {
             }
         }
     }
-
 
 }

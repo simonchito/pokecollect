@@ -1,5 +1,6 @@
 package ar.edu.uade.da2023.pokecollect.ui
 
+
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

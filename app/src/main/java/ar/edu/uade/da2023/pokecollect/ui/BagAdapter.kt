@@ -12,7 +12,8 @@ import ar.edu.uade.da2023.pokecollect.R
 import ar.edu.uade.da2023.pokecollect.model.PokemonInfo
 import com.bumptech.glide.Glide
 
-class BagAdapter(private var favorites: List<PokemonInfo>) : RecyclerView.Adapter<BagAdapter.ViewHolder>() {
+class BagAdapter(private var allFavorites: List<PokemonInfo>) : RecyclerView.Adapter<BagAdapter.ViewHolder>() {
+    private var filteredFavorites: List<PokemonInfo> = allFavorites
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.card_view, parent, false)
@@ -20,21 +21,28 @@ class BagAdapter(private var favorites: List<PokemonInfo>) : RecyclerView.Adapte
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val favorite = favorites[position]
+        val favorite = filteredFavorites[position]
         holder.bind(favorite)
     }
 
     override fun getItemCount(): Int {
-        return favorites.size
+        return filteredFavorites.size
     }
 
     fun setFavorites(favorites: List<PokemonInfo>) {
-        this.favorites = favorites
+        allFavorites = favorites
+        filterFavorites("")
+    }
+
+    fun filterFavorites(query: String) {
+        filteredFavorites = if (query.isNotBlank()) {
+            allFavorites.filter { favorite ->
+                favorite.name.contains(query, ignoreCase = true)
+            }
+        } else {
+            allFavorites
+        }
         notifyDataSetChanged()
-
-        // Imprimir un log de la lista de favoritos
-        Log.d("BagAdapter", "Lista de favoritos: $favorites")
-
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -47,7 +55,7 @@ class BagAdapter(private var favorites: List<PokemonInfo>) : RecyclerView.Adapte
             Glide.with(itemView)
                 .load(favorite.sprites.front_default)
                 .into(itemImage)
-            itemTitle.text = favorite.name.capitalize()
+            itemTitle.text = favorite.name.replaceFirstChar { it.uppercaseChar() }
             itemOrder.text = "Figure: ${favorite.order}"
             // Imprimir los valores como logs
 

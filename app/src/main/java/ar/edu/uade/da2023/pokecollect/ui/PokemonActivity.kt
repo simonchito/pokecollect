@@ -1,5 +1,6 @@
 package ar.edu.uade.da2023.pokecollect.ui
 
+
 import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
@@ -72,7 +73,7 @@ class PokemonActivity : AppCompatActivity() {
 
         sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this)
         lastPokemonName = sharedPrefs.getString("lastPokemonName", null)
-        val pokemonName = intent.getStringExtra("pokemonName")
+        val pokemonName = intent.getStringExtra("pokemonName")?.toLowerCase()
         Log.d(_TAG, "pokemonInfo value: ${pokemonName}")
 
         val actualPokemonName = pokemonName ?: lastPokemonName

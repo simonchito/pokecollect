@@ -1,6 +1,9 @@
 package ar.edu.uade.da2023.pokecollect.ui
 
+import Pokemon
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.AdapterView
@@ -17,6 +20,7 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
+import com.google.gson.Gson
 
 
 class MainActivity : AppCompatActivity() {
@@ -30,6 +34,11 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var searchView: SearchView
 
+    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var adapter: ArrayAdapter<String>
+    private lateinit var originalPokemonNames: List<String>
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +48,8 @@ class MainActivity : AppCompatActivity() {
         checkUser()
         setSupportActionBar(findViewById(R.id.toolbar))
         bindViewModel()
+
+        sharedPreferences = getSharedPreferences("pokemon_cache", Context.MODE_PRIVATE)
 
         searchView = findViewById(R.id.searchMainVw)
 
@@ -71,36 +82,58 @@ class MainActivity : AppCompatActivity() {
 
     private fun bindViewModel() {
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
+
+        // Inicializar SharedPreferences
+        sharedPreferences = getSharedPreferences("pokemon_cache", Context.MODE_PRIVATE)
+
+        // Obtener la lista de pokemons almacenada en caché
+        val cachedPokemonList = sharedPreferences.getString("pokemon_list", null)
+        if (!cachedPokemonList.isNullOrEmpty()) {
+            val cachedPokemon = Gson().fromJson<Pokemon>(cachedPokemonList, Pokemon::class.java)
+            updatePokemonList(cachedPokemon)
+        } else {
+            viewModel.onStart()
+        }
+
         viewModel.pokemon.observe(this) { pokemon ->
-            val originalPokemonNames = pokemon.results.map { it.name } // Obtener los nombres de los Pokémon originales
-            var filteredPokemonNames = originalPokemonNames.toList() // Crear una copia de la lista original
+            updatePokemonList(pokemon)
 
-            val listView = findViewById<ListView>(R.id.listViewPokedex)
-            val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, filteredPokemonNames.map { it.replaceFirstChar { it.uppercaseChar() } })
-            listView.adapter = adapter
+            // Guardar la lista de pokemons en caché
+            val jsonPokemon = Gson().toJson(pokemon)
+            sharedPreferences.edit().putString("pokemon_list", jsonPokemon).apply()
+        }
+    }
 
-            listView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
-                val selectedPokemon = filteredPokemonNames[position]
-                val intent = Intent(this@MainActivity, PokemonActivity::class.java)
-                intent.putExtra("pokemonName", selectedPokemon)
-                startActivity(intent)
+    private fun updatePokemonList(pokemon: Pokemon) {
+        originalPokemonNames = pokemon.results.map { it.name }
+        val filteredPokemonNames = originalPokemonNames.toList()
+
+        val listView = findViewById<ListView>(R.id.listViewPokedex)
+        adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, filteredPokemonNames.map { it.replaceFirstChar { it.uppercaseChar() } })
+        listView.adapter = adapter
+
+        listView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
+            val selectedPokemon = filteredPokemonNames[position]
+            val intent = Intent(this@MainActivity, PokemonActivity::class.java)
+            intent.putExtra("pokemonName", selectedPokemon)
+            startActivity(intent)
+        }
+
+        val searchView = findViewById<SearchView>(R.id.searchMainVw)
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                return false
             }
 
-            val searchView = findViewById<SearchView>(R.id.searchMainVw)
-            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String): Boolean {
-                    return false
-                }
-
-                override fun onQueryTextChange(newText: String): Boolean {
-                    filteredPokemonNames = originalPokemonNames.filter { it.contains(newText, true) }.map { it.replaceFirstChar { it.uppercaseChar() } }
-                    adapter.clear()
-                    adapter.addAll(filteredPokemonNames)
-                    adapter.notifyDataSetChanged()
-                    return true
-                }
-            })
-        }
+            override fun onQueryTextChange(newText: String): Boolean {
+                val filteredNames = originalPokemonNames.filter { it.contains(newText, true) }
+                    .map { it.replaceFirstChar { it.uppercaseChar() } }
+                adapter.clear()
+                adapter.addAll(filteredNames)
+                adapter.notifyDataSetChanged()
+                return true
+            }
+        })
     }
 
 

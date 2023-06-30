@@ -72,26 +72,39 @@ class MainActivity : AppCompatActivity() {
     private fun bindViewModel() {
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         viewModel.pokemon.observe(this) { pokemon ->
-            val pokemonNames = pokemon.results.map { it.name } // Obtener los nombres de los Pokémon
-            // Actualizar la lista de la pantalla utilizando pokemonNames
+            val originalPokemonNames = pokemon.results.map { it.name } // Obtener los nombres de los Pokémon originales
+            var filteredPokemonNames = originalPokemonNames.toList() // Crear una copia de la lista original
+
             val listView = findViewById<ListView>(R.id.listViewPokedex)
-            val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, pokemonNames)
+            val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, filteredPokemonNames.map { it.replaceFirstChar { it.uppercaseChar() } })
             listView.adapter = adapter
 
-            // Establecer el listener de clic en el ListView
             listView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
-                val selectedPokemon = pokemonNames[position]
-
-                // Crear un intent para iniciar la actividad PokemonActivity
+                val selectedPokemon = filteredPokemonNames[position]
                 val intent = Intent(this@MainActivity, PokemonActivity::class.java)
                 intent.putExtra("pokemonName", selectedPokemon)
                 startActivity(intent)
             }
+
+            val searchView = findViewById<SearchView>(R.id.searchMainVw)
+            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String): Boolean {
+                    return false
+                }
+
+                override fun onQueryTextChange(newText: String): Boolean {
+                    filteredPokemonNames = originalPokemonNames.filter { it.contains(newText, true) }.map { it.replaceFirstChar { it.uppercaseChar() } }
+                    adapter.clear()
+                    adapter.addAll(filteredPokemonNames)
+                    adapter.notifyDataSetChanged()
+                    return true
+                }
+            })
         }
-
-
     }
-    
+
+
+
 
     private fun checkUser() {
         val firebaseUser = firebaseAuth.currentUser

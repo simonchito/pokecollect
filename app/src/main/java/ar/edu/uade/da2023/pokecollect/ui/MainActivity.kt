@@ -95,21 +95,28 @@ class MainActivity : AppCompatActivity() {
             val userCollection = db.collection("users")
             val userDocument = userCollection.document(firebaseUser.uid)
 
-            val userData = hashMapOf(
-                "email" to firebaseUser.email
-            )
+            userDocument.get().addOnSuccessListener { documentSnapshot ->
+                if (!documentSnapshot.exists()) {
+                    // El documento del usuario no existe, se debe crear con los datos iniciales
+                    val userData = hashMapOf(
+                        "email" to firebaseUser.email,
+                        "favorites" to emptyList<Map<String, Any>>() // Lista vacía de favoritos
+                    )
 
-            userDocument.set(userData)
-                .addOnSuccessListener {
-                    // El usuario se guardó correctamente en Firestore
-                    // Continúa con la lógica de tu aplicación después de guardar el usuario
+                    userDocument.set(userData)
+                        .addOnSuccessListener {
+                            // El usuario se guardó correctamente en Firestore
+                            // Continúa con la lógica de tu aplicación después de guardar el usuario
+                        }
+                        .addOnFailureListener { exception ->
+                            // Ocurrió un error al guardar el usuario en Firestore
+                            // Maneja el error según tus necesidades
+                        }
                 }
-                .addOnFailureListener { exception ->
-                    // Ocurrió un error al guardar el usuario en Firestore
-                    // Maneja el error según tus necesidades
-                }
+            }
         }
     }
+
 
 
     private fun exitApplication() {

@@ -15,8 +15,8 @@
 
         <ImageView
             android:id="@+id/pokemonBagImg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_margin="5dp"
             android:contentDescription="@string/IMAGEN"
             android:layout_gravity="center_vertical"

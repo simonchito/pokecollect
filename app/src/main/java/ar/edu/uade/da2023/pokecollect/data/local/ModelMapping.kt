@@ -28,3 +28,5 @@ fun PokemonInfoLocal.toExternal() = PokemonInfo(
     sprites = Gson().fromJson(sprites, Sprites::class.java),
     types = Gson().fromJson(types, object : TypeToken<List<Type>>() {}.type)
 )
+fun List<PokemonInfoLocal>.toExternal(): List<PokemonInfo> = map(PokemonInfoLocal::toExternal)
+

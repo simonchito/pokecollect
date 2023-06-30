@@ -9,6 +9,7 @@ import ar.edu.uade.da2023.pokecollect.R
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.ListView
+import android.widget.SearchView
 import android.widget.Toolbar
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -27,6 +28,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var pokemonButton: Button
     private lateinit var bagButton: Button
 
+    private lateinit var searchView: SearchView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +39,8 @@ class MainActivity : AppCompatActivity() {
         checkUser()
         setSupportActionBar(findViewById(R.id.toolbar))
         bindViewModel()
+
+        searchView = findViewById(R.id.searchMainVw)
 
         //Configuracion del boton exit, al apretarlo cierra la aplicacion completamente
         exitButton = findViewById(R.id.ExitBtn)
@@ -83,7 +88,10 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         }
+
+
     }
+    
 
     private fun checkUser() {
         val firebaseUser = firebaseAuth.currentUser

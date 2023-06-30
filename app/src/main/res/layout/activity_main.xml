@@ -9,42 +9,28 @@
 
 
     <include
+        android:id="@+id/include3"
         layout="@layout/custom_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="-6dp" />
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/searchMainVw"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ListView
         android:id="@+id/listViewPokedex"
-        android:layout_width="386dp"
-        android:layout_height="391dp"
-        android:layout_marginTop="28dp"
+        android:layout_width="380dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
         android:background="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/ExitBtn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.48"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchTxtVw" />
-
-    <EditText
-        android:id="@+id/searchTxtVw"
-        android:layout_width="386dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="132dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="9dp"
-        android:background="@color/naranja"
-        android:ems="10"
-        android:inputType="text"
-        android:singleLine="false"
-        android:text="@string/search"
-        app:layout_constraintBottom_toTopOf="@+id/_dynamic"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.466"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="Autofill,LabelFor" />
+        app:layout_constraintTop_toBottomOf="@+id/searchMainVw" />
 
     <Button
         android:id="@+id/ExitBtn"
@@ -55,10 +41,26 @@
         android:text="@string/exit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/_dynamic"
-        app:layout_constraintVertical_bias="0.847"
+        app:layout_constraintTop_toBottomOf="@+id/listViewPokedex"
+        app:layout_constraintVertical_bias="0.5"
         tools:ignore="UnknownId" />
+
+    <SearchView
+        android:id="@+id/searchMainVw"
+        android:layout_width="380dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/listViewPokedex"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.444"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/include3"
+        app:layout_constraintVertical_bias="0.099" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

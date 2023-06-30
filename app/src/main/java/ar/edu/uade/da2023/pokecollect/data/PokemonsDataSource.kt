@@ -3,11 +3,10 @@ package ar.edu.uade.da2023.pokecollect.data
 import Pokemon
 import android.util.Log
 import ar.edu.uade.da2023.pokecollect.data.local.toLocal
+import ar.edu.uade.da2023.pokecollect.model.Poke
 import ar.edu.uade.da2023.pokecollect.model.PokemonInfo
-import com.google.firebase.firestore.FirebaseFirestore
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.Response
 
 class PokemonsDataSource {
     private val BASE_URL = "https://pokeapi.co/api/v2/"
@@ -28,21 +27,37 @@ class PokemonsDataSource {
     suspend fun getPokemons(): Pokemon {
         Log.d(TAG, "Pokemons DataSource GET")
 
-        return try {
-            val response = api.getPokemons()
-            if (response.isSuccessful) {
-                val pokemonList = response.body()?.results ?: emptyList()
-                val count = response.body()?.count ?: 0
-                Pokemon(count, pokemonList)
-            } else {
-                Log.e(TAG, "Error en llamada API: ${response.message()}")
-                Pokemon(0, emptyList())
-            }
+        var nextUrl: String? = null
+        val pokemonList = mutableListOf<Poke>()
+
+        try {
+            do {
+                val response = if (nextUrl.isNullOrEmpty()) {
+                    api.getPokemons()
+                } else {
+                    api.getPokemonsByUrl(nextUrl)
+                }
+
+                if (response.isSuccessful) {
+                    val result = response.body()
+                    result?.results?.let {
+                        pokemonList.addAll(it)
+                    }
+                    nextUrl = result?.next
+                } else {
+                    Log.e(TAG, "Error en llamada API: ${response.message()}")
+                    return Pokemon(0, null, null, emptyList())
+                }
+            } while (nextUrl != null)
+
+            return Pokemon(pokemonList.size, null, null, pokemonList)
         } catch (e: Exception) {
             Log.e(TAG, "Error en llamada API: ${e.message}")
-            Pokemon(0, emptyList())
+            return Pokemon(0, null, null, emptyList())
         }
     }
+
+
 
     suspend fun getPokemon(name: String): PokemonInfo {
         Log.d(TAG, "Pokemon DataSource GET")

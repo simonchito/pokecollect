@@ -16,6 +16,8 @@ android {
         versionCode 1
         versionName "1.0"
 
+        resValue "string", "app_name", "@string/app_name"
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 

@@ -113,9 +113,9 @@ class MainActivity : AppCompatActivity() {
         listView.adapter = adapter
 
         listView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
-            val selectedPokemon = filteredPokemonNames[position]
+            val selectedPokemonName = adapter.getItem(position)  // Obtener el nombre del Pokémon seleccionado
             val intent = Intent(this@MainActivity, PokemonActivity::class.java)
-            intent.putExtra("pokemonName", selectedPokemon)
+            intent.putExtra("pokemonName", selectedPokemonName)
             startActivity(intent)
         }
 

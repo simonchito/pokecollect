@@ -4,39 +4,81 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_margin="8dp"
-    android:padding="8dp"
-    app:cardCornerRadius="10dp"
-    >
-    <LinearLayout
+    android:layout_margin="10dp"
+    android:padding="10dp"
+    app:cardCornerRadius="10dp">
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/pokemonBagImg"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
             android:layout_margin="5dp"
+            android:layout_alignParentStart="true"
             android:contentDescription="@string/IMAGEN"
-            android:layout_gravity="center_vertical"
             tools:srcCompat="@tools:sample/avatars" />
 
-        <TextView
-            android:id="@+id/nameBagTxv"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:layout_gravity="center_vertical"
-            android:text="@string/NAME" />
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="15dp"
+            android:layout_toEndOf="@id/pokemonBagImg"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/figureBagTxv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:layout_gravity="center_vertical"
-            android:text="@string/FIGURE" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/nameBagTxv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_marginHorizontal="5dp"
+                android:paddingTop="10dp"
+                android:text="@string/NAME" />
+
+            <TextView
+                android:id="@+id/figureBagTxv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_marginHorizontal="10dp"
+                android:text="@string/FIGURE" />
+
+            <TextView
+                android:id="@+id/skillBagTxv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="@string/SKILL" />
+
+            <TextView
+                android:id="@+id/typeBagTxv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_marginHorizontal="10dp"
+                android:text="@string/TYPE" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/borrarBtn"
+            android:layout_width="43dp"
+            android:layout_height="36dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="7dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@color/white"
+            android:drawableBottom="@android:drawable/ic_delete" />
+
+    </RelativeLayout>
 </androidx.cardview.widget.CardView>
+
 

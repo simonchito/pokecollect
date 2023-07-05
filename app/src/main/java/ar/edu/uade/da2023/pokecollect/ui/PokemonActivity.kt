@@ -91,6 +91,7 @@ class PokemonActivity : AppCompatActivity() {
                     pokemonInfo.postValue(it)
                     // Guardar el nombre del último Pokémon buscado en SharedPreferences
                     sharedPrefs.edit().putString("lastPokemonName", actualPokemonName).apply()
+                    updateFavoriteButtonState()
                 }.onFailure {
                     Log.e(_TAG, "PokemonInfo Error", it)
                 }
@@ -182,6 +183,7 @@ class PokemonActivity : AppCompatActivity() {
         }
 
 
+
         val favoritoBtn = findViewById<Button>(R.id.favoritoBtn)
 
         // Inicializar el estado de favorito del Pokémon
@@ -209,16 +211,16 @@ class PokemonActivity : AppCompatActivity() {
                                 if (isPokemonFavorite) {
                                     // El pokemon ya está en la tabla de favoritos, no es necesario agregarlo
                                     removeFromFavorites(userDocument, pokemon)
-                                    favoritoBtn.setBackgroundResource(android.R.drawable.btn_star_big_off)
+                                    favoritoBtn.setCompoundDrawablesWithIntrinsicBounds(null, null, null, resources.getDrawable(android.R.drawable.btn_star_big_off))
                                 } else {
                                     // El pokemon no está en la tabla de favoritos, agregarlo
                                     addToFavorites(userDocument, pokemon)
-                                    favoritoBtn.setBackgroundResource(android.R.drawable.btn_star_big_on)
+                                    favoritoBtn.setCompoundDrawablesWithIntrinsicBounds(null, null, null, resources.getDrawable(android.R.drawable.btn_star_big_on))
                                 }
                             } else {
                                 // La lista de favoritos está vacía, agregar el primer pokemon
                                 addToFavorites(userDocument, pokemon)
-                                favoritoBtn.setBackgroundResource(android.R.drawable.btn_star_big_on)
+                                favoritoBtn.setCompoundDrawablesWithIntrinsicBounds(null, null, null, resources.getDrawable(android.R.drawable.btn_star_big_on))
                             }
                         }
                     }
@@ -226,7 +228,18 @@ class PokemonActivity : AppCompatActivity() {
             }
         }
 
-        // Actualizar el estado del botón de favorito al iniciar la actividad
+
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        updateFavoriteButtonState()
+    }
+
+
+    private fun updateFavoriteButtonState() {
+        val favoritoBtn = findViewById<Button>(R.id.favoritoBtn)
         val pokemon = pokemonInfo.value
         if (pokemon != null) {
             val pokemonValue = pokemon.name ?: ""
@@ -242,9 +255,19 @@ class PokemonActivity : AppCompatActivity() {
                         if (favorites != null) {
                             val isPokemonFavorite = favorites.any { it["name"] == pokemonValue }
                             if (isPokemonFavorite) {
-                                favoritoBtn.setBackgroundResource(android.R.drawable.btn_star_big_on)
+                                favoritoBtn.setCompoundDrawablesWithIntrinsicBounds(
+                                    null,
+                                    null,
+                                    null,
+                                    resources.getDrawable(android.R.drawable.btn_star_big_on)
+                                )
                             } else {
-                                favoritoBtn.setBackgroundResource(android.R.drawable.btn_star_big_off)
+                                favoritoBtn.setCompoundDrawablesWithIntrinsicBounds(
+                                    null,
+                                    null,
+                                    null,
+                                    resources.getDrawable(android.R.drawable.btn_star_big_off)
+                                )
                             }
                         }
                     }
@@ -252,6 +275,8 @@ class PokemonActivity : AppCompatActivity() {
             }
         }
     }
+
+
     private fun addToFavorites(userDocument: DocumentReference, pokemon: PokemonInfo) {
         val favoriteMap = pokemon.toLocal()
         userDocument.update("favorites", FieldValue.arrayUnion(favoriteMap))

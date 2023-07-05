@@ -29,8 +29,6 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
 import java.util.Locale
-import android.R.drawable.btn_star_big_on
-import android.R.drawable.btn_star_big_off
 
 class PokemonActivity : AppCompatActivity() {
 
@@ -91,7 +89,7 @@ class PokemonActivity : AppCompatActivity() {
                     pokemonInfo.postValue(it)
                     // Guardar el nombre del último Pokémon buscado en SharedPreferences
                     sharedPrefs.edit().putString("lastPokemonName", actualPokemonName).apply()
-                    updateFavoriteButtonState()
+                    updateFavoriteButtonState(actualPokemonName)
                 }.onFailure {
                     Log.e(_TAG, "PokemonInfo Error", it)
                 }
@@ -232,43 +230,34 @@ class PokemonActivity : AppCompatActivity() {
 
     }
 
-    override fun onResume() {
-        super.onResume()
-        updateFavoriteButtonState()
-    }
 
 
-    private fun updateFavoriteButtonState() {
+    private fun updateFavoriteButtonState(name: String) {
         val favoritoBtn = findViewById<Button>(R.id.favoritoBtn)
-        val pokemon = pokemonInfo.value
-        if (pokemon != null) {
-            val pokemonValue = pokemon.name ?: ""
+        val user = firebaseAuth.currentUser
+        if (user != null) {
+            val userId = user.uid
+            val userDocument = firestore.collection("users").document(userId)
 
-            val user = firebaseAuth.currentUser
-            if (user != null) {
-                val userId = user.uid
-                val userDocument = firestore.collection("users").document(userId)
-
-                userDocument.get().addOnSuccessListener { document ->
-                    if (document.exists()) {
-                        val favorites = document.data?.get("favorites") as? List<Map<String, Any>>
-                        if (favorites != null) {
-                            val isPokemonFavorite = favorites.any { it["name"] == pokemonValue }
-                            if (isPokemonFavorite) {
-                                favoritoBtn.setCompoundDrawablesWithIntrinsicBounds(
-                                    null,
-                                    null,
-                                    null,
-                                    resources.getDrawable(android.R.drawable.btn_star_big_on)
-                                )
-                            } else {
-                                favoritoBtn.setCompoundDrawablesWithIntrinsicBounds(
-                                    null,
-                                    null,
-                                    null,
-                                    resources.getDrawable(android.R.drawable.btn_star_big_off)
-                                )
-                            }
+            userDocument.get().addOnSuccessListener { document ->
+                if (document.exists()) {
+                    val favorites = document.data?.get("favorites") as? List<Map<String, Any>>
+                    if (favorites != null) {
+                        val isPokemonFavorite = favorites.any { it["name"] == name }
+                        if (isPokemonFavorite) {
+                            favoritoBtn.setCompoundDrawablesWithIntrinsicBounds(
+                                null,
+                                null,
+                                null,
+                                resources.getDrawable(android.R.drawable.btn_star_big_on)
+                            )
+                        } else {
+                            favoritoBtn.setCompoundDrawablesWithIntrinsicBounds(
+                                null,
+                                null,
+                                null,
+                                resources.getDrawable(android.R.drawable.btn_star_big_off)
+                            )
                         }
                     }
                 }
